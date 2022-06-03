@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.retrofit.api.CEPService;
 import com.example.retrofit.model.CEP;
@@ -68,17 +69,22 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<CEP>() {
             @Override
             public void onResponse(Call<CEP> call, Response<CEP> response) {
-                if(response.isSuccessful()){
+                
+                if (textoCep.length() != 8){
+                    Toast.makeText(MainActivity.this, "CEP INVALIDO", Toast.LENGTH_SHORT).show();
+                }
+                
+                else if(response.isSuccessful()){
                     CEP cep = response.body();  //Convertendo os dados no MODEL criado
                     textoResultado.setText("CEP: " + cep.getCep() + "\n" + "Logradouro: " + cep.getLogradouro() + "\n" +"Complemento: " + cep.getComplemento() +
                             "\n" + "Bairro: " + cep.getBairro() + "\n" + "Localidade: " + cep.getLocalidade() + "\n" + "UF: " + cep.getUf());
                 }
 
             }
-            
+
             @Override
             public void onFailure(Call<CEP> call, Throwable t) {
-
+                
             }
         });
 
